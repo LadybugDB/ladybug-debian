@@ -1,0 +1,6 @@
+This packaging follows Debian source format 3.0 (quilt).
+
+To build from upstream source:
+  1. Download the Ladybug release tarball.
+  2. Rename to ladybug_<version>.orig.tar.gz.
+  3. Run: dpkg-buildpackage -us -uc

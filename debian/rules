@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/architecture.mk
+
+%:
+	dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DBUILD_LBUG=ON \
+		-DBUILD_SHELL=ON \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_EXTENSION_TESTS=OFF \
+		-DBUILD_SINGLE_FILE_HEADER=OFF \
+		-DBUILD_BENCHMARK=OFF \
+		-DBUILD_WAL_DUMP=OFF \
+		-DBUILD_JAVA=OFF \
+		-DBUILD_NODEJS=OFF \
+		-DBUILD_PYTHON=OFF \
+		-DCMAKE_INSTALL_LIBDIR=lib/$(DEB_HOST_MULTIARCH)
+
+override_dh_auto_install:
+	dh_auto_install
+	# Upstream installs libraries to /usr/lib; move to multiarch path.
+	if [ -d debian/tmp/usr/lib ]; then \
+		mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH); \
+		for f in debian/tmp/usr/lib/liblbug.so debian/tmp/usr/lib/liblbug.a; do \
+			if [ -e "$${f}" ]; then mv "$${f}" debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/; fi; \
+		done; \
+	fi
