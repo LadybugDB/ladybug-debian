@@ -62,7 +62,7 @@ jobs:
       - name: Upload .deb artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: debian-packages
+          name: debian-packages-${{ runner.arch }}
           path: ./*.deb
 
       - name: List built packages
