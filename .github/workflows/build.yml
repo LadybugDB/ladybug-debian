@@ -14,18 +14,21 @@ jobs:
       - name: Checkout this repository
         uses: actions/checkout@v4
 
-      - name: Install build dependencies and ccache
+      - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ccache debhelper-compat cmake build-essential
+          sudo apt-get install -y debhelper-compat cmake build-essential
 
-      - name: Setup ccache
-        run: |
-          echo "=== Configuring ccache ==="
-          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-          echo "PATH=/usr/lib/ccache:$PATH" >> $GITHUB_ENV
-          ccache -M 2G
-          ccache -z
+      - name: Setup ccache (Linux)
+        if: runner.os == 'Linux'
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: precompiled-bin-${{ runner.os }}-${{ runner.arch }}-${{ github.ref }}
+          max-size: 2G
+          create-symlink: true
+          restore-keys: |
+            precompiled-bin-${{ runner.os }}-${{ runner.arch }}-refs/heads/main
+            precompiled-bin-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Clone upstream sources
         run: |
