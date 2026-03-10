@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -69,3 +71,19 @@ jobs:
         run: |
           echo "=== Built packages ==="
           ls -la ./*.deb
+
+  release:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: debian-packages-*
+          merge-multiple: true
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./*.deb
