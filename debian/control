@@ -1,18 +1,17 @@
 Source: ladybug
 Section: database
 Priority: optional
-Maintainer: Arun <arun@ladybugdb.com>
+Maintainer: Ally Heev <allyheev@gmail.com>
 Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
- cmake,
- g++
-Standards-Version: 4.7.0
+ cmake
+Standards-Version: 4.7.2
 Homepage: https://ladybugdb.com/
 Vcs-Browser: https://github.com/LadybugDB/ladybug
 Vcs-Git: https://github.com/LadybugDB/ladybug.git
 
-Package: ladybug-cli
+Package: ladybug
 Architecture: any
 Depends:
  ${misc:Depends},
@@ -21,7 +20,7 @@ Description: Embedded graph database command-line client
  Ladybug is an embedded graph database optimized for query speed and
  scalability.
  .
- This package provides the lbug interactive shell CLI.
+ This package provides the LadybugDB interactive shell CLI `lbug`.
 
 Package: liblbug0
 Section: libs
