@@ -20,7 +20,8 @@ Description: Embedded graph database command-line client
  Ladybug is an embedded graph database optimized for query speed and
  scalability.
  .
- This package provides the LadybugDB interactive shell CLI `lbug`.
+ This package provides the LadybugDB interactive shell command
+ line client (lbug).
 
 Package: liblbug0
 Section: libs
