@@ -1,3 +1,0 @@
-# ignore this lintian rule as it is not recommended
-# for C++ libraries
-liblbug0 source: no-symbols-control-file
