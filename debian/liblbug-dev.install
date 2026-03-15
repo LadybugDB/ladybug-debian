@@ -1,2 +1,3 @@
 usr/include/lbug.h
 usr/lib/*/liblbug.a
+usr/lib/*/liblbug.so

@@ -26,7 +26,7 @@ override_dh_auto_install:
 	# Upstream installs libraries to /usr/lib; move to multiarch path.
 	if [ -d debian/tmp/usr/lib ]; then \
 		mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH); \
-		for f in debian/tmp/usr/lib/liblbug.so debian/tmp/usr/lib/liblbug.a; do \
+		for f in debian/tmp/usr/lib/liblbug.*; do \
 			if [ -e "$${f}" ]; then mv "$${f}" debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/; fi; \
 		done; \
 	fi
