@@ -1,6 +1,6 @@
 ladybug (0.15.1-1) unstable; urgency=medium
 
-  * Initial release.
-  * Package lbug CLI, shared runtime library, and development headers.
+  * Initial release (CLoses: #1130583)
+  * Package ladybug CLI, shared runtime library, and development headers.
 
- -- Arun <arun@ladybugdb.com>  Mon, 09 Mar 2026 11:55:00 -0700
+ -- Ally Heev <allyheev@gmail.com>  Sun, 15 Mar 2026 20:26:00 +0530
