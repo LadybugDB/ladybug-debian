@@ -1,3 +1,10 @@
+ladybug (0.18.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Add OpenSSL dependency (> 3.0.0, < 4.0.0).
+
+ -- Arun <arun@ladybugdb.com>  Wed, 01 Jul 2026 10:28:00 -0700
+
 ladybug (0.17.1-1) unstable; urgency=medium
 
   * New upstream release.
