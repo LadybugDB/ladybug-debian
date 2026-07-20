@@ -1,3 +1,14 @@
+ladybug (0.18.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump debhelper-compat to 14.
+  * Bump Standards-Version to 4.7.4 (no changes required).
+  * Update debian/watch to version 5 format.
+  * Remove obsolete soname.patch (no longer needed).
+  * Add separate copyright stanza for debian/* packaging files.
+
+ -- Ally Heev <allyheev@gmail.com>  Sun, 20 Jul 2026 21:00:00 +0530
+
 ladybug (0.18.0-1) unstable; urgency=medium
 
   * New upstream release.
