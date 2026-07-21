@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      upstream_commit:
+        description: 'Upstream commit hash to build from (overrides tag lookup)'
+        required: false
+        default: ''
+      tag:
+        description: 'Tag/Release to upload to'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - runs-on: ubuntu-latest
+          - runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debhelper-compat cmake build-essential
+
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: precompiled-bin-${{ runner.os }}-${{ runner.arch }}-${{ github.ref }}
+          max-size: 2G
+          create-symlink: true
+          restore-keys: |
+            precompiled-bin-${{ runner.os }}-${{ runner.arch }}-refs/heads/main
+            precompiled-bin-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Clone upstream sources
+        run: |
+          echo "=== Cloning upstream sources ==="
+          UPSTREAM_COMMIT="${{ inputs.upstream_commit }}"
+          if [ -n "${UPSTREAM_COMMIT}" ]; then
+            echo "Using provided upstream commit: ${UPSTREAM_COMMIT}"
+              git clone --filter=blob:none --no-checkout https://github.com/LadybugDB/ladybug.git upstream
+              git -C upstream fetch --depth 1 origin "${UPSTREAM_COMMIT}"
+              git -C upstream checkout --detach "${UPSTREAM_COMMIT}"
+          else
+            UPSTREAM_VERSION=$(dpkg-parsechangelog -l debian/changelog --show-field Version | cut -d'-' -f1)
+            echo "Cloning upstream tag for version ${UPSTREAM_VERSION}"
+            if ! git clone --depth 1 --branch "v${UPSTREAM_VERSION}" https://github.com/LadybugDB/ladybug.git upstream 2>/dev/null; then
+              echo "ERROR: Tag 'v${UPSTREAM_VERSION}' not found in upstream repository." >&2
+              echo "To proceed, re-run this workflow manually and provide" >&2
+              echo "the upstream commit hash in the 'upstream_commit' input field." >&2
+              exit 1
+            fi
+          fi
+
+      - name: Copy debian directory
+        run: |
+          echo "=== Copying debian directory ==="
+          rm -rf upstream/debian
+          cp -r debian upstream/
+
+      - name: Build package with ninja
+        run: |
+          echo "=== Building package with ninja ==="
+          cd upstream
+          export DH_BUILD_SYSTEM=cmake_ninja
+          dpkg-buildpackage -us -uc -b
+
+      - name: Show build stats
+        run: |
+          echo "=== Build stats ==="
+          ccache -s
+
+      - name: Upload .deb artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-packages-${{ runner.arch }}
+          path: ./*.deb
+
+      - name: List built packages
+        run: |
+          echo "=== Built packages ==="
+          ls -la ./*.deb
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: debian-packages-*
+          merge-multiple: true
+
+      - name: Upload packages to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          files: ./*.deb
