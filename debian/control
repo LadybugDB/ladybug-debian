@@ -1,6 +1,5 @@
 Source: ladybug
 Section: database
-Priority: optional
 Maintainer: Ally Heev <allyheev@gmail.com>
 Rules-Requires-Root: no
 Build-Depends:
@@ -8,7 +7,7 @@ Build-Depends:
  cmake,
  libssl-dev (>= 3.0.0),
  libssl-dev (<< 4.0.0)
-Standards-Version: 4.7.2
+Standards-Version: 4.7.4
 Homepage: https://ladybugdb.com/
 Vcs-Browser: https://github.com/LadybugDB/ladybug
 Vcs-Git: https://github.com/LadybugDB/ladybug.git
