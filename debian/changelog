@@ -2,7 +2,7 @@ ladybug (0.18.3-1) unstable; urgency=medium
 
   * New upstream release.
   * Downgrade debian/watch to version 4 format.
-  * Closes #1130583
+  * Closes: #1130583
 
  -- Ally Heev <allyheev@gmail.com>  Wed, 22 Jul 2026 22:06:00 +0530
 
