@@ -63,12 +63,6 @@ jobs:
           echo "=== Build stats ==="
           ccache -s
 
-      - name: Upload .deb artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: debian-packages-${{ runner.arch }}
-          path: ./*.deb
-
       - name: List built packages
         run: |
           echo "=== Built packages ==="
