@@ -30,3 +30,6 @@ override_dh_auto_install:
 			if [ -e "$${f}" ]; then mv "$${f}" debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/; fi; \
 		done; \
 	fi
+
+override_dh_dwz:
+	# Disable dwz
