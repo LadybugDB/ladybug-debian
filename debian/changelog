@@ -1,3 +1,13 @@
+ladybug (0.20.4-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Revert `Bump Standards-Version to 4.7.4 (no changes required).`
+  * Revert `Update debian/watch to version 5 format.`
+  * Add Priority field back to debian/control.
+  * Disable dh_dwz.
+
+ -- Ally Heev <allyheev@gmail.com>  Sat, 31 Oct 2026 16:31:38 +0530
+
 ladybug (0.18.2-1) unstable; urgency=medium
 
   * New upstream release.
